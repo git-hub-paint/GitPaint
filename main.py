@@ -68,7 +68,7 @@ def GetTodayPixel():
         return -1
     
     if not is_2025():
-        return -1
+        return 2
 
     image = cv2.imread(REPO_PATH+'/image_to_draw.png')
     height, width = image.shape[:2]
