@@ -1,0 +1,1 @@
+Screenshots are generated each time the script runs and pushed to github.
