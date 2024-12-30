@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time
+from dotenv import load_dotenv
 
 REPO_PATH = os.path.dirname(os.path.abspath(__file__))  # Current script directory
 
@@ -14,14 +15,20 @@ chrome_options = Options()
 chrome_options.add_argument("--force-dark-mode")  # Forces dark mode
 chrome_options.add_argument("--enable-features=WebContentsForceDark")  # Forces web content to dark mode
 
+load_dotenv()
+
 
 def MakeCommit():
-    # GitHub Configuration
-    REPO_URL = 'https://github.com/git-hub-paint/GitPaint.git'
+    # GitHub Configurations
+    
+    username = "git-hub-paint"
+    password = os.getenv('GITHUB_TOKEN')
+    REPO_URL = f'https://{username}:{password}@github.com/git-hub-paint/GitPaint.git'
 
 
     # Step 1: Initialize and Commit Changes Locally
-    repo = Repo.init(REPO_PATH)
+    repo = Repo(REPO_PATH)
+    repo.git.update_environment(**os.environ)
     origin = None
 
     # Check if 'origin' remote exists
@@ -31,13 +38,13 @@ def MakeCommit():
         origin = repo.remote(name='origin')
 
     # Stage and commit changes
-    repo.git.add('--all')
-    repo.index.commit('Automated commit via GitPython')
+    repo.git.add(all=True)
+    repo.index.commit(str(days_since_january_first()))
 
     # Step 2: Push to GitHub
     try:
         origin.push(refspec='HEAD:refs/heads/main')
-        print(f'Changes pushed to {REPO_URL}.')
+        print(f'Changes pushed to Github.')
     except Exception as e:
         print(f'Error during push: {e}')
 
