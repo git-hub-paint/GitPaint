@@ -1,7 +1,4 @@
--update files on pi
--setup auth token with env variables so i never get logged out
--sign in and push to github from pi 
-(git credential helper or some permanent way to stay logged in with this account)
--setup pi daily script launch (cronjobs?)
-
--first few days check on pi if script is working
+-test cronjob
+-change file with random text before each commit
+-fix screenshot lighting error
+-check if dates align
