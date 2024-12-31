@@ -1,4 +1,5 @@
 -test cronjob
 -change file with random text before each commit
+-change each commit message width Day (Daynumber)
 -fix screenshot lighting error
 -check if dates align

@@ -2,17 +2,18 @@ from git import Repo
 import cv2
 from datetime import date
 import os
+import io
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time
 from dotenv import load_dotenv
+import random
 
 REPO_PATH = os.path.dirname(os.path.abspath(__file__))  # Current script directory
 
 # Set up Chrome options
 chrome_options = Options()
-chrome_options.add_argument("--force-dark-mode")  # Forces dark mode
 chrome_options.add_argument("--enable-features=WebContentsForceDark")  # Forces web content to dark mode
 
 load_dotenv()
@@ -24,7 +25,11 @@ def MakeCommit():
     username = "git-hub-paint"
     password = os.getenv('GITHUB_TOKEN')
     REPO_URL = f'https://{username}:{password}@github.com/git-hub-paint/GitPaint.git'
-
+    daystr=str(random.randint(1, 1000000))+" Day "+str(days_since_january_first()) 
+    print(daystr)
+    with io.open('change.txt', 'w', encoding='utf-8') as file:
+        file.write(daystr)
+    
 
     # Step 1: Initialize and Commit Changes Locally
     repo = Repo(REPO_PATH)
@@ -39,7 +44,7 @@ def MakeCommit():
 
     # Stage and commit changes
     repo.git.add(all=True)
-    repo.index.commit(str(days_since_january_first()))
+    repo.index.commit(daystr)
 
     # Step 2: Push to GitHub
     try:
@@ -97,8 +102,15 @@ SetPixel(GetTodayPixel())
 time.sleep(2)
 
 #Open Browser, take a screenshot
-driver = webdriver.Chrome(options=chrome_options)  # Or webdriver.Firefox()
+driver = webdriver.Chrome()  # Or webdriver.Firefox()
 driver.get('https://github.com/git-hub-paint')
+time.sleep(2)
+driver.execute_script("""
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // If system dark mode is enabled, GitHub should automatically detect this.
+        document.body.style.filter = 'invert(1) hue-rotate(180deg)';
+    }
+""")
 driver.maximize_window()
 time.sleep(10)
 driver.save_screenshot(REPO_PATH+'/proof/'+str(days_since_january_first())+'.png')
