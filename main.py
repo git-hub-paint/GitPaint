@@ -9,6 +9,9 @@ from selenium.webdriver.chrome.options import Options
 import time
 from dotenv import load_dotenv
 import random
+from unittest.mock import patch
+
+
 
 REPO_PATH = os.path.dirname(os.path.abspath(__file__))  # Current script directory
 
@@ -81,14 +84,18 @@ def GetTodayPixel():
         return -1
     
     if not is_2025():
-        return 3
+        return -1
+        
 
     image = cv2.imread(REPO_PATH+'/image_to_draw.png')
     height, width = image.shape[:2]
+    
+    print("Day " + str(days))
 
-    print(x,y)
+    print(f"Position {x},{y}")
 
     green_value = image[y, x][1]  # [1] is the green channel in BGR format
+    print("Value "+str(round(green_value/255*4.5)))
     return round(green_value/255*4.5)
 
 

@@ -1,3 +1,0 @@
--fix screenshot dark mode error
--check if dates align (no commits)
--check if cronjob works with custom time (with commits, last thing)
