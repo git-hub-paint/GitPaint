@@ -28,7 +28,7 @@ def MakeCommit():
     REPO_URL = f'https://{username}:{password}@github.com/git-hub-paint/GitPaint.git'
     daystr=str(random.randint(1, 1000000))+" Day "+str(days_since_january_first()) 
     print(daystr)
-    with io.open('change.txt', 'w', encoding='utf-8') as file:
+    with io.open('/home/pi/Desktop/GitPaint/change.txt', 'w', encoding='utf-8') as file:
         file.write(daystr)
     
 
