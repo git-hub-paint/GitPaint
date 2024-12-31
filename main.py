@@ -14,7 +14,8 @@ REPO_PATH = os.path.dirname(os.path.abspath(__file__))  # Current script directo
 
 # Set up Chrome options
 chrome_options = Options()
-chrome_options.add_argument("--enable-features=WebContentsForceDark")  # Forces web content to dark mode
+chrome_options.add_argument("--headless") 
+#chrome_options.add_argument("--enable-features=WebContentsForceDark")  # Forces web content to dark mode
 
 load_dotenv()
 
@@ -80,7 +81,7 @@ def GetTodayPixel():
         return -1
     
     if not is_2025():
-        return 2
+        return 3
 
     image = cv2.imread(REPO_PATH+'/image_to_draw.png')
     height, width = image.shape[:2]
@@ -102,15 +103,8 @@ SetPixel(GetTodayPixel())
 time.sleep(2)
 
 #Open Browser, take a screenshot
-driver = webdriver.Chrome()  # Or webdriver.Firefox()
+driver = webdriver.Chrome(options=chrome_options)  # Or webdriver.Firefox()
 driver.get('https://github.com/git-hub-paint')
-time.sleep(2)
-driver.execute_script("""
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        // If system dark mode is enabled, GitHub should automatically detect this.
-        document.body.style.filter = 'invert(1) hue-rotate(180deg)';
-    }
-""")
 driver.maximize_window()
 time.sleep(10)
 driver.save_screenshot(REPO_PATH+'/proof/'+str(days_since_january_first())+'.png')
