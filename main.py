@@ -75,12 +75,12 @@ def is_2025():
     return current_year == 2025
 
 def GetTodayPixel():
-    days=days_since_january_first()
+    days=days_since_january_first()+3
 
     x=days//7
     y=days%7
 
-    if x>52:
+    if x>53:
         return -1
     
     if not is_2025():
@@ -96,6 +96,7 @@ def GetTodayPixel():
 
     green_value = image[y, x][1]  # [1] is the green channel in BGR format
     print("Value "+str(round(green_value/255*4.5)))
+    print(green_value)
     return round(green_value/255*4.5)
 
 
@@ -111,7 +112,7 @@ time.sleep(2)
 
 #Open Browser, take a screenshot
 driver = webdriver.Chrome(options=chrome_options)  # Or webdriver.Firefox()
-driver.get('https://github.com/git-hub-paint')
+driver.get('https://github.com/git-hub-paint?tab=overview&from=2025-01-01&to=2025-01-01')
 driver.maximize_window()
 time.sleep(10)
 driver.save_screenshot(REPO_PATH+'/proof/'+str(days_since_january_first())+'.png')
